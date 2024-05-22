@@ -1,19 +1,19 @@
-import csv
+english_to_russian = {}
+with open('en-ru.txt', 'r', encoding='utf-8') as file:
+    for line in file:
+        english, russian = line.strip().split(' - ')
+        russian_words = [word.strip() for word in russian.split(',')]
+        english_to_russian[english] = russian_words
 
-with open('данные.csv', newline='') as csvfile:
-    reader = csv.reader(csvfile)
-    next(reader)
+russian_to_english = {}
+for english_word, russian_words in english_to_russian.items():
+    for russian_word in russian_words:
+        if russian_word in russian_to_english:
+            russian_to_english[russian_word].append(english_word)
+        else:
+            russian_to_english[russian_word] = [english_word]
 
-    total_cost = 0
-    shopping_list = []
-
-    for row in reader:
-        product, quantity, price = row
-        cost = int(quantity) * int(price)
-        total_cost += cost
-        shopping_list.append(f"{product} - {quantity} шт. за {price} руб.")
-
-print("Нужно купить:")
-for item in shopping_list:
-    print(item)
-print(f"Итоговая сумма: {total_cost} руб.")
+with open('ru-en.txt', 'w', encoding='utf-8') as file:
+    for russian_word in sorted(russian_to_english.keys()):
+        english_words = ', '.join(sorted(russian_to_english[russian_word]))
+        file.write(f"{russian_word} – {english_words}\n")

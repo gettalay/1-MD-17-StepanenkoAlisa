@@ -1,20 +1,58 @@
-import os
-from PIL import Image
+import json
 
-source = r'Z:\1-МД-17 алгоритмизация\Степаненко'
-destination_folder = r'Z:\1-МД-17 алгоритмизация\Степаненко\2'
 
-if not os.path.exists(destination_folder):
-    os.makedirs(destination_folder)
+#добавлениe нового продукта в файл
+def add_product():
+    name = input("Введите название продукта: ")
+    price = float(input("Введите цену продукта: "))
+    weight = float(input("Введите вес продукта: "))
+    available = input("Есть ли продукт в наличии? (да/нет): ").lower() == 'да'
 
-for filename in os.listdir(source):
-    if filename.endswith(".jpg") or filename.endswith(".png"):
+    with open('products.json', 'r', encoding='utf-8') as json_file:
+        data = json.load(json_file)
 
-        image_path = os.path.join(source, filename)
-        image = Image.open(image_path)
-        image = image.rotate(90)
-        image = image.resize((300, 300))
-        destination_path = os.path.join(destination_folder, filename)
-        image.save(destination_path)
+    new_product = {
+        "name": name,
+        "price": price,
+        "weight": weight,
+        "available": available
+    }
+    data['products'].append(new_product)
 
-print("Изображения обработаны и сохранены в указанной папке.")
+    with open('products.json', 'w') as json_file:
+        json.dump(data, json_file, indent=4)
+
+with open('products.json') as json_file:
+    data = json.load(json_file)
+
+products = data['products']
+
+for product in products:
+    name = product['name']
+    price = product['price']
+    weight = product['weight']
+    available = "В наличии" if product['available'] else "Нет в наличии"
+
+    print(f"Название: {name}")
+    print(f"Цена: {price}")
+    print(f"Вес: {weight}")
+    print(available)
+    print()
+
+add_product()
+
+with open('products.json') as json_file:
+    updated_data = json.load(json_file)
+
+print("\nОбновленные данные:")
+for product in updated_data['products']:
+    name = product['name']
+    price = product['price']
+    weight = product['weight']
+    available = "В наличии" if product['available'] else "Нет в наличии"
+
+    print(f"Название: {name}")
+    print(f"Цена: {price}")
+    print(f"Вес: {weight}")
+    print(available)
+    print()

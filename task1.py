@@ -1,6 +1,5 @@
 from PIL import Image, ImageFilter
 
-
 def z1():
     img = Image.open('10.jpg')
     img.show()

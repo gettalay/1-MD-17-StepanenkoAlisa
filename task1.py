@@ -1,38 +1,19 @@
 from PIL import Image, ImageFilter
+import os
 
-def z1():
-    img = Image.open('10.jpg')
-    img.show()
-    print(f'Размер: ', img.size, f'. Формат: ', img.format, f'. Цветовая модель: ', img.mode)
+inp = r'Z:\1-МД-17 алгоритмизация\Степаненко'
+outp = r'Z:\1-МД-17 алгоритмизация\Степаненко\2'
+os.makedirs(outp, exist_ok=True)
 
+for file_name in os.listdir(inp):
+    input_path = os.path.join(inp, file_name)
 
-def z2():
-    img = Image.open('12.jpg')
-    reimg = img.thumbnail((img.height / 3, img.width / 3))
-    reimg.save(r'Z:\1-МД-17 алгоритмизация\Степаненко\1\11.jpg')
+    if os.path.isfile(input_path) and file_name.lower().endswith(('.png', '.jpg', '.jpeg')):
+        image = Image.open(input_path)
 
-    mirror = img.transpose(Image.FLIP_LEFT_RIGHT)
-    mirror.save = (r'Z:\1-МД-17 алгоритмизация\Степаненко\1\12.jpg')
+        processed_img = image.filter(ImageFilter.BLUR)
 
-    mirror2 = img.transpose(Image.FLIP_TOP_BOTTOM)
-    mirror2.save = (r'Z:\1-МД-17 алгоритмизация\Степаненко\1\13.jpg')
-    print()
+        output_path = os.path.join(outp, file_name)
+        processed_img.save(output_path)
 
-
-def z3():
-    for i in range(1, 6):
-        img = Image.open(f'{i}.jpg')
-        filterimg = img.filter(ImageFilter.CONTOUR)
-        filterimg.save = (fr'Z:\1-МД-17 алгоритмизация\Степаненко\2\{i}.jpg')
-    print()
-
-
-def z4():
-    wm = Image.open('cat.png')
-    pos = (0, 0)
-    for i in range(1, 6):
-        img = Image.open(f'{i}.jpg')
-        watermarkimg = img.copy()
-        watermarkimg.paste(wm, pos, wm)
-        watermarkimg.save = (fr'Z:\1-МД-17 алгоритмизация\Степаненко\2\{i}.jpg')
-    print()
+print("Обработка изображений завершена.")

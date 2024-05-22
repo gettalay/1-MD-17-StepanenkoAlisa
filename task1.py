@@ -1,18 +1,19 @@
-import json
+class Restaurant:
+    def __init__(self, restaurant_name, cuisine_type):
+        self.restaurant_name = restaurant_name
+        self.cuisine_type = cuisine_type
 
-with open('products.json') as json_file:
-    data = json.load(json_file)
+    def describe_restaurant(self):
+        print(f"В Ресторане {self.restaurant_name} предлагается {self.cuisine_type} кухня.")
 
-products = data['products']
+    def open_restaurant(self):
+        print(f"Ресторан {self.restaurant_name} открыт!")
 
-for product in products:
-    name = product['name']
-    price = product['price']
-    weight = product['weight']
-    available = "В наличии" if product['available'] else "Нет в наличии"
 
-    print(f"Название: {name}")
-    print(f"Цена: {price}")
-    print(f"Вес: {weight}")
-    print(available)
-    print()
+newRestaurant = Restaurant("La Trattoria", "итальянская")
+
+print("Название ресторана:", newRestaurant.restaurant_name)
+print("Тип кухни:", newRestaurant.cuisine_type)
+
+newRestaurant.describe_restaurant()
+newRestaurant.open_restaurant()
